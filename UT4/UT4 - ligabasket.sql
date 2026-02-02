@@ -251,3 +251,5 @@ COMMIT;
 
 SELECT * FROM Jugadores;
 SELECT * FROM Equipos;
+
+Elena chochito rico
