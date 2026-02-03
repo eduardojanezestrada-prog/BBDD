@@ -1,0 +1,25 @@
+DROP DATABASE IF EXISTS EjemploBegin;
+CREATE DATABASE EjemploBegin;
+USE EjemploBegin;
+
+CREATE TABLE Prueba (
+campo INT,
+PRIMARY KEY (campo)
+) ENGINE = InnoDB;
+
+INSERT INTO Prueba VALUES (1), (2), (3);
+SELECT * FROM Prueba;
+
+BEGIN;
+INSERT INTO Prueba VALUES (4);
+SELECT * FROM Prueba;
+ROLLBACK;
+SELECT * FROM Prueba;
+
+BEGIN;
+INSERT INTO Prueba VALUES (4);
+SELECT * FROM Prueba;
+COMMIT;
+
+
+LOCK TABLES WITH READ LOCK;
