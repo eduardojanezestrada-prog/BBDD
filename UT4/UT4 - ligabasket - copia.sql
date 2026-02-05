@@ -99,7 +99,7 @@ SELECT 0, E.id_equipo, Q.id_equipo, 75, 74, CURRENT_DATE()
 FROM Equipos E, Equipos Q
 WHERE E.nombre='Valencia Basket' AND Q.nombre='Unicaja';
 
-#-- Insertar el partido jugado hoy entre los equipos 2 y 3,
+#-- Insertar el partido jugado hoy entre los Equipos 2 y 3,
 #-- con el mismo resultado que el partido jugado entre Valencia Basket Y Unicaja
 INSERT INTO Partidos
 SELECT 0, 2, 3, puntosL, puntosV, CURRENT_DATE()
@@ -116,49 +116,67 @@ REPLACE INTO Partidos VALUES (7, 1, 2, 91, 86, '2026-01-16');
 SELECT * FROM Partidos;
 
 #-- Importar datos(Carga masiva) de Jugadores
-
-
+LOAD DATA INFILE "C:\\BBDD\\Jugadores.txt" INTO TABLE Jugadores;
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 #---- Modificaciones: UPDATE ---------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
 #-- Establece como pabellón de juego del Baskonia el "Fernando Buesa Arena"
-
+UPDATE Equipos
+SET pabellon='Fernando Buesa Arena'
+WHERE nombre='Baskonia';
+SELECT * FROM Equipos;
 
 #-- Establece como pabellón de juego de la ciudad de Malaga el "Martin Carpena"
+UPDATE Equipos
+SET pabellon='Martin Carpena'
+WHERE ciudad='Malaga';
+SELECT * FROM Equipos;
 
-
-#-- Cambiar el resultado del partido jugado entre los equipos 3 y 4, con resultado final 84-86
-
+#-- Cambiar el resultado del partido jugado entre los Equipos 3 y 4, con resultado final 84-86
+UPDATE Partidos
+SET puntosL=84, puntosV=86
+WHERE elocal=3 AND evisit=4;
+SELECT * FROM Partidos;
 
 #-- Subir el salario de TODOS los jugadore 1000€
-
+UPDATE Jugadores
+SET salario=salario+1000;
+SELECT * FROM Jugadores;
 
 #-- Bajar el salario 1000€ a los jugadores del Madrid
-
+UPDATE Jugadores
+SET salario=salario-1000
+WHERE equipo=(SELECT id_equipo FROM Equipos WHERE nombre LIKE '%Madrid%');
+SELECT * FROM Jugadores;
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 #-- Borrar registros: DELETE ---------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
 #-- Eliminamos el jugador Markus Howard
-
+DELETE FROM Jugadores
+WHERE nombre='Markus' AND apellido='Howard';
+SELECT * FROM Jugadores;
 
 #-- Eliminar los partidos de Unicaja como visitante
-
+DELETE FROM Partidos
+WHERE evisit=(SELECT id_equipo FROM Equipos WHERE nombre='Unicaja');
+SELECT * FROM Partidos;
 
 #-- Borramos TODOS los partidos de Ucam Murcia
-
+DELETE FROM Partidos
+WHERE elocal=(SELECT id_equipo FROM Equipos WHERE nombre='Ucam Murcia')
+OR evisit=(SELECT id_equipo FROM Equipos WHERE nombre='Ucam Murcia');
+SELECT * FROM Partidos;
 
 #-- Borramos de la base de datos TODOS los registros de Jugadores
-
+DELETE FROM Jugadores;
 
 #-- Importar datos(Carga masiva)
-
+LOAD DATA INFILE "C:\\BBDD\\Jugadores.txt" INTO TABLE Jugadores;
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
@@ -169,32 +187,41 @@ SELECT * FROM Partidos;
 
 #-- Intentamos borrar al Baskonia pero no nos deja por una restricción de borrado(en la tabla Jugadores)
 #-- Para borrarlo antes tenemos que hacer que no haya jugadores de ese equipo.
-
+BEGIN;
+DELETE FROM Jugadores
+WHERE equipo=(SELECT id_equipo FROM Equipos WHERE nombre='Baskonia');
 
 #-- Una vez que no haya jugadores de Baskonia y no haya referencias a este equipo podemos borrarlo
-
-
+DELETE FROM Equipos
+WHERE nombre='Baskonia';
+SELECT * FROM Equipos;
+COMMIT;
 
 #-- 2) BORRADO NULO -----------------------------------------------------------------------------------------------------------------------
 
 #-- Borramos al jugador Sergio Llull(Capitan del Madrid)
-
+SELECT * FROM Jugadores;
+DELETE FROM Jugadores
+WHERE nombre='Sergio' AND apellido='Llull';
+SELECT * FROM Jugadores;
 
 #-- 3) BORRADO EN CASCADA -----------------------------------------------------------------------------------------------------------------
 #-- Borramos el equipo Real Madrid
-
-
-
-
-#-- Comprobamos que se hayan borrado sus partidos tambien
-
-
+BEGIN;
+DELETE FROM Jugadores
+WHERE equipo=(SELECT id_equipo FROM Equipos WHERE nombre='Real Madrid');
+DELETE FROM Equipos
+WHERE nombre='Real Madrid';
+COMMIT;
+SELECT * FROM Equipos;
+SELECT * FROM Partidos;
+SELECT * FROM Jugadores;
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 #-- TRANSACCIONES --------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
-#-- Borrar yb Equipo implica dos operaciones:
+#-- Borrar yb Equipos implica dos operaciones:
 #-- 1) Borrar todos los jugadores de Unicaja(o cambiarlos de equipo)
 #-- 2) Una vez que el equipo no tiene jugadores, borrar el equipo
 
