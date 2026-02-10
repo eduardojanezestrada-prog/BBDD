@@ -1,0 +1,16 @@
+DROP FUNCTION IF EXISTS esImpar;
+
+DELIMITER $$
+
+CREATE FUNCTION esImpar(numero INT) RETURNS INT
+BEGIN
+	DECLARE res INT;
+	IF (numero%2=0) THEN
+		SET res=FALSE;
+	ELSE
+		SET res=TRUE;
+	END IF;
+	RETURN res;
+END $$
+
+DELIMITER ;
