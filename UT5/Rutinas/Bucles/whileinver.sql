@@ -1,0 +1,13 @@
+DROP PROCEDURE IF EXISTS whileinver;
+
+DELIMITER $$
+
+CREATE PROCEDURE whileinver(num INT)
+BEGIN
+	WHILE num>0 DO
+		SELECT num;
+		SET num=num-1;
+	END WHILE;
+END$$
+
+DELIMITER ;

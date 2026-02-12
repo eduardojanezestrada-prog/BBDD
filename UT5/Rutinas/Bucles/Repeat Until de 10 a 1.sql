@@ -1,0 +1,15 @@
+DROP PROCEDURE IF EXISTS containveruntil;
+
+DELIMITER $$
+
+CREATE PROCEDURE containveruntil(num INT)
+BEGIN
+	REPEAT
+		SELECT num;
+		SET num=num-1;
+	UNTIL num<=0
+	END REPEAT;
+END$$
+
+DELIMITER ;
+

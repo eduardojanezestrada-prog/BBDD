@@ -1,0 +1,26 @@
+DROP PROCEDURE IF EXISTS mes;
+
+DELIMITER $$
+
+CREATE PROCEDURE mes(IN m INT)
+BEGIN
+	CASE m
+		WHEN 1 THEN SELECT 'Enero' AS Mes;
+		WHEN 2 THEN SELECT 'Febrero' AS Mes;
+		WHEN 3 THEN SELECT 'Marzo' AS Mes;
+		WHEN 4 THEN SELECT 'Abril' AS Mes;
+		WHEN 5 THEN SELECT 'Mayo' AS Mes;
+		WHEN 6 THEN SELECT 'Junio' AS Mes;
+		WHEN 7 THEN SELECT 'Julio' AS Mes;
+		WHEN 8 THEN SELECT 'Agosto' AS Mes;
+		WHEN 9 THEN SELECT 'Septiembre' AS Mes;
+		WHEN 10 THEN SELECT 'Octubre' AS Mes;
+		WHEN 11 THEN SELECT 'Noviembre' AS Mes;
+		WHEN 12 THEN SELECT 'Diciembre' AS Mes;
+		ELSE SELECT 'No es un mes valido' AS Mes;
+	END CASE;
+END$$
+
+DELIMITER ;
+
+CALL mes(1);
