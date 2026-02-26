@@ -4,12 +4,12 @@ DELIMITER $$
 
 CREATE FUNCTION MayorDiv(num INT) RETURNS INT
 BEGIN
-	DECLARE divi INT;
-	DECLARE conta INT;
-	SET conta=1;
+	DECLARE divi, conta INT;
+	SET conta=2;
+	SET divi=1;
 	
 	IF num<=1 THEN
-		RETURN 1;
+		RETURN divi;
 	END IF;
 	
 	WHILE (conta<=(num/2)) DO

@@ -4,7 +4,7 @@ DELIMITER $$
 
 CREATE PROCEDURE PrimoSuma(limite INT)
 BEGIN
-	DECLARE conta INT, c INT, tot INT;
+	DECLARE conta, c, tot INT;
 	SET c=0;
 	SET conta=1;
 	SET tot=0;
