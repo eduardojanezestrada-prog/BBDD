@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS Envios;
+CREATE DATABASE Envios;
+USE Envios;
+SOURCE C:\BBDD\envios.sql;
+
