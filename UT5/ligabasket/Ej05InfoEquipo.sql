@@ -7,17 +7,12 @@ DELIMITER $$
 
 CREATE PROCEDURE info(idEq INT)
 BEGIN
-	DECLARE nom CHAR(50);
-	DECLARE pargan, parpen, favor, contra INT;
-	SET nom=(SELECT nombre FROM equipos WHERE id_equipo=idEq);
-	SET pargan=(SELECT PartidosGanados(idEq));
-	SET parpen=(SELECT COUNT(*)
-				FROM partidos
-				WHERE (elocal=idEq AND puntosL<puntosV) OR (evisit=idEq AND puntosL>puntosV));
-	SET favor= (SELECT puntos_favor(idEq));
-	SET contra= (SELECT pcontra(idEq));
-	
-	SELECT nom AS Nombre, pargan AS PG, IFNULL(parpen, 0) AS PP, favor AS PF, contra AS PC;
+	DECLARE total, ganados INT;
+	SET total=(SELECT COUNT(*) FROM Partidos WHERE elocal=idEq OR evisit=idEq);
+	SET ganados=PartidosGanados(idEq);
+	SELECT nombre, ganados AS "PG", total-ganados AS "PP", puntos_favor(idEq) AS "PF", pcontra(idEq) AS "PC"
+	FROM Equipos
+	WHERE id_equipo=idEq;
 END$$
 
 DELIMITER ;
