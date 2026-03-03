@@ -4,20 +4,16 @@ DROP FUNCTION IF EXISTS PartidosGanados;
 
 DELIMITER $$
 
-CREATE FUNCTION PartidosGanados(equipo INT) RETURNS INT
+CREATE FUNCTION PartidosGanados(equi INT) RETURNS INT
 BEGIN
-	DECLARE contar, part INT;
-	DECLARE ganador CHAR(50);
-	SET contar=0;
-	SET part=(SELECT id_partido FROM partidos WHERE id_partido>=ALL(SELECT id_partido FROM partidos));
-	WHILE part>0 DO
-		SET ganador=CALL gan(part);
-		IF (ganador=(SELECT nombre FROM equipos WHERE id_equipo=equipo)) THEN
-			SET contar=contar+1;
-		END IF;
-		 SET part=part-1;
-	END WHILE
-	RETURN contar;
+	DECLARE contar, contar2 INT;
+	SET contar=	(SELECT COUNT(*)
+				FROM partidos
+				WHERE elocal=equi AND puntosL>puntosV);
+	SET contar2=(SELECT COUNT(*)
+				FROM partidos
+				WHERE evisit=equi AND puntosL<puntosV);
+	RETURN contar+contar2;
 END$$
 
 DELIMITER ;
