@@ -1,0 +1,12 @@
+DROP FUNCTION IF EXISTS unidadesProveedor;
+
+DELIMITER $$
+
+CREATE FUNCTION unidadesProveedor(codprov VARCHAR(4)) RETURNS INT
+BEGIN
+	DECLARE tot INT;
+	SET tot=(SELECT SUM(cant) FROM SP WHERE sn=codprov);
+	RETURN IFNULL(tot, 0);
+END$$
+
+DELIMITER ;

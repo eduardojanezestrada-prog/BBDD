@@ -9,7 +9,7 @@ DELIMITER $$
 
 CREATE PROCEDURE infoEnvio(pro VARCHAR(4), pie VARCHAR(4))
 BEGIN
-	SELECT snombre AS Proveedor, pnombre AS Pieza, pesoTotal(pro, pie) AS 'Peso total';
+	SELECT snombre AS Proveedor, pnombre AS Pieza, pesoTotal(pro, pie) AS "Peso total"
 	FROM S JOIN SP ON S.sn=SP.sn JOIN P ON SP.pn=P.pn
 	WHERE SP.sn=pro AND SP.pn=pie;
 END$$
