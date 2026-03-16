@@ -142,6 +142,15 @@ SELECT C.*
 FROM Ocuapcion_Vuelos O JOIN Vuelos V ON O.vuelo=V.vuelo JOIN Clientes C ON O.pasajero=C.nif
 WHERE origen='MADRID' AND destino='LONDRES' AND fecha='2024-04-23';
 
+#-- Con subconsultas
+SELECT *
+FROM Clientes
+WHERE nif IN(SELECT pasajero
+			 FROM Ocuapcion_Vuelos
+			 where vuelo IN(SELECT vuelo
+							FROM Vuelos
+							WHERE origen='MADRID' AND destino='LONDRES' AND fecha='2024-04-23'));
+
 #-- 12. Obtén los datos de los vuelos previstos para mayo y junio de 2024.
 SELECT *
 FROM Vuelos
