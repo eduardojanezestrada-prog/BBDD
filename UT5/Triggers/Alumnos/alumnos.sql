@@ -1,0 +1,56 @@
+DROP DATABASE IF EXISTS Clase;
+CREATE DATABASE Clase;
+USE Clase;
+
+CREATE TABLE Alumnos(
+id INT AUTO_INCREMENT,
+nombre VARCHAR(20) NOT NULL,
+nota DECIMAL(4,2) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DELIMITER $$
+
+CREATE TRIGGER correcion_notas
+BEFORE INSERT ON Alumnos
+FOR EACH ROW
+BEGIN
+IF NEW.nota>10 THEN
+	SET NEW.nota=10;
+ELSEIF NEW.NOTA<0 THEN
+	SET NEW.nota=0;
+END IF;
+END$$
+
+DELIMITER ;
+
+INSERT INTO Alumnos VALUES (0,'Pedro',7.5),(0,'Juana',11),(0,'Luis',-1);
+SELECT * FROM Alumnos;
+
+DELIMITER $$
+
+CREATE TRIGGER actualizacion_notas
+BEFORE UPDATE ON Alumnos
+FOR EACH ROW
+BEGIN
+IF NEW.nota>10 THEN
+	SET NEW.nota=10;
+ELSEIF NEW.nota<0 THEN
+	SET NEW.nota=0;
+END IF;
+END$$
+
+DELIMITER ;
+
+UPDATE Alumnos
+SET nota=-1;
+SELECT * FROM Alumnos;
+
+UPDATE Alumnos
+SET nota=15;
+SELECT * FROM Alumnos;
+
+UPDATE Alumnos
+SET nota=6.5;
+SELECT * FROM Alumnos;
+
